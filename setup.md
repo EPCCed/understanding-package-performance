@@ -1,60 +1,78 @@
 ---
 title: Setup
 ---
-### Website accounts to create
-Please seek help at the start of the lesson if you have not been able to establish a website account on:
-- The [Docker Hub](http://hub.docker.com). We will use the Docker Hub to download pre-built container images, and for you to upload and download container images that you create, as explained in the relevant lesson episodes.
 
-### Files to download
+## SSH client
 
-Download the `docker-intro.zip` file from the main GitHub repository page: 
-[Docker Introduction Github](https://github.com/carpentries-incubator/docker-introduction/). 
+All attendees should have an SSH client installed.
+SSH is a tool that allows us to connect to and use a remote computer as our own.
+Please follow the directions below to install an SSH client for your system.
 
-Move the downloaded file to your Desktop and unzip it. It should unzip to a folder called `docker-intro`. 
+**Windows**
 
-### Software to install
-Unfortunately, in many common situations installing Docker on your laptop will not straightforward if you do not have a large amount of technical experience. We have helpers on hand that have worked their way through the install process but be prepared for some troubleshooting.
+Modern versions of Windows have SSH available in Powershell. You can test if it is available by typing `ssh --help` in Powershell. If it is
+installed, you should see some useful output. If it is not installed, you will get an error. If SSH is not available in Powershell, then
+you should install MobaXterm as described below.
 
-Please try to install the appropriate software from the list below depending on the operating system that your laptop is running:
-#### Microsoft Windows
-**You must have admin rights to run docker!** Some parts of the lesson will work without running as admin but if you are unable to `Run as admin` on your machine some of this workshop might not work easily.
+An alternative is to install MobaXterm from [http://mobaxterm.mobatek.net](http://mobaxterm.mobatek.net). You will want to get the Home edition (Installer edition). However, if Git Bash works, you do not need this.
 
-If you have Windows 10 Pro Edition:
- - First try to install the [Docker Desktop (Windows)](https://hub.docker.com/editions/community/docker-ce-desktop-windows), or **failing that**;
- - Install the [Docker Toolbox (Windows)](https://docs.docker.com/toolbox/toolbox_install_windows/).
+**macOS**
 
-If you have Windows 10 Home Edition:
- - Install the [Docker Toolbox (Windows)](https://docs.docker.com/toolbox/toolbox_install_windows/).
+macOS comes with SSH pre-installed, so you should not need to install anything.
 
-#### Apple macOS
-Either:
- - Try this first, although it will not work with older versions of macOS. Install the [Docker Desktop (Mac)](https://hub.docker.com/editions/community/docker-ce-desktop-mac), or **failing that**:
- - Install the [Docker Toolbox (Mac)](https://docs.docker.com/toolbox/toolbox_install_mac/).
+**Linux**
 
-#### Linux:
-There are too many varieties of Linux to give precise instructions here, but hopefully you can locate documentation for getting Docker installed on your Linux distribution. It may already be installed. Note that Docker do list a number of versions of the Docker Engine for different Linux distributions, at <https://hub.docker.com/search/?type=edition&offering=community>
+Linux users do not need to install anything, you should be set!
 
+## Account on ARCHER2
 
-### A quick tutorial on copy/pasting file contents from episodes of the lesson
-Let's say you want to copy text off the lesson website and paste it into a file named `myfile` in the current working directory of a shell window. This can be achieved in many ways, depending on your laptop's operating system, but routes I have found work for me:
-- macOS and Linux: you are likely to have the `nano` editor installed, which provides you with a very straightforward way to create such a file, just run `nano myfile`, then paste text into the shell window, and press <kbd>control</kbd>+<kbd>x</kbd> to exit: you will be prompted whether you want to save changes to the file, and you can type <kbd>y</kbd> to say "yes".
-- Microsoft Windows running `cmd.exe` shells:
-  - `del myfile` to remove `myfile` if it already existed;
-  - `copy con myfile` to mean what's typed in your shell window is copied into `myfile`;
-  - paste the text you want within `myfile` into the shell window;
-  - type <kbd>control</kbd>+<kbd>z</kbd> and then press <kbd>enter</kbd> to finish copying content into `myfile` and return to your shell;
-  - you can run the command `type myfile` to check the content of that file, as a double-check.
-- Microsoft Windows running PowerShell:
-  - The `cmd.exe` method probably works, but another is to paste your file contents into a so-called "here-string" between `@'` and `'@` as in this example that follows (the ">" is the prompt indicator):
+Please sign up for your account on our HPC machine, ARCHER2, which will be available to
+you for the duration of the course and for a few days afterwards, to allow you to
+complete the practical exercises and put some of what you have learned into practice.
 
-        > @'
-        Some hypothetical
-        file content that is
+### Sign up for a SAFE account
 
-        split over many
+To sign up, you must first register for an account on SAFE (our service administration
+web application):
 
-        lines.
-        '@ | Set-Content myfile -encoding ascii
+If you are already registered on the ARCHER or Tier-2 SAFE you do not need to re-register. Please proceed to the next step.
+
+1. Go to the [SAFE New User Signup Form](https://safe.epcc.ed.ac.uk/signup.jsp)
+2. Fill in your personal details. You can come back later and change them if you wish. Note: you should register using your institutional or company email address - email domains such as gmail.com, outlook.com, etc. are not allowed to be used for access to ARCHER2
+3. Click “Submit”
+4. You are now registered. A single use login link will be emailed to the email address you provided. You can use this link to login and set your password.
+
+### Sign up for an account on ARCHER2 through SAFE
+
+1. [Login to SAFE](https://safe.epcc.ed.ac.uk)
+2. Go to the Menu "Login accounts" and select "Request login account"
+3. Choose the `ta007` project “Choose Project for Machine Account” box and click "Next"
+4. On the next page, the ARCHER2 system should be selected. Click "Next"
+5. Enter the username you would prefer to use on ARCHER2. Every username must be unique, so if your chosen name is taken, you will need to choose another
+
+Now you have to wait for the course organiser to accept your request to register. When this has happened, your account will be created on ARCHER2.
+Once this has been done, you should be sent an email. _If you have not received an email but believe that your account should have been activated, check your account status in SAFE which will also show when the account has been activated._ You can then pick up your one shot initial password for ARCHER2 from your SAFE account.
+
+### Generate an SSH key pair and upload it to SAFE
+
+In addition to your password, you will need an SSH key pair to access ARCHER2. There is useful guidance on how
+to generate SSH key pairs in [the ARCHER2 documentation](https://docs.archer2.ac.uk/user-guide/connecting/#ssh-key-pairs).
+
+Once you have generated your key pair, you need to add the public part to your ARCHER2 account in SAFE:
+
+1. [Login to SAFE](https://safe.epcc.ed.ac.uk)
+2. Go to the Menu “Login accounts” and select the ARCHER2 account you want to add the SSH key to
+3. On the subsequent Login account details page click the “Add Credential” button
+4. Select “SSH public key” as the Credential Type and click “Next”
+5. Either copy and paste the public part of your SSH key into the “SSH Public key” box or use the button to select the public key file on your computer.
+6. Click “Add” to associate the public SSH key part with your account
+
+The public SSH key part will now be added to your login account on the ARCHER2 system.
+
+### Log into ARCHER2
+
+You should now be able to log into Cirrus by following the [login instructions in the ARCHER2 documentation](https://docs.archer2.ac.uk/user-guide/connecting/#ssh-clients).
+
 
 {% include links.md %}
 

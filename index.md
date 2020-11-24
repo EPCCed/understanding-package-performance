@@ -3,25 +3,34 @@ layout: lesson
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-This session aims to introduce the use of Docker containers with the goal of using them to effect reproducible computational environments. Such environments are useful for ensuring reproducible research outputs, for example.
+This lesson aims to introduce basic benchmarking on HPC systems to help users make the most
+efficient use of any resources they have been awarded on the system.
+
+The lesson aims to answer the following questions:
+  - Why should I benchmark (and potentially profile) my use of research software on HPC systems?
+  - How do I measure performance and which metrics should I use and when?
+  - What is a good approach to benchmark my use of a particular package?
+  - How can I automate the process of benchmarking and collating results?
+  - What can basic profiling show me and how can I access this information?  
 
 > ## Prerequisites
->
-> - You should have basic familiarity with using a command shell, and the lesson text will at times request that you "open a shell window", with an assumption that you know what this means.
->   - Under Linux or macOS it is assumed that you will access a `bash` shell (usually the default), using your Terminal application.
->   - Under Windows, Powershell and Git Bash should allow you to use the Unix instructions. We will also try to give command variants for Windows `cmd.exe`.
-> - As an item of setup, it is assumed that you have a directory named `container-playground` that you are able to `cd` to using your command shell, *and* are also able to find using your computer's graphical file browser (e.g., Finder on macOS or Windows Explorer). A simple way to achieve this is to create your `container-playground` directory within your computer's `Desktop` folder. (See the Software Carpentry Shell lesson for more details.)
-> - The lessons will sometimes request that you use a text editor to create or edit files in particular directories. It is assumed that you either have an editor that you know how to use that runs within the working directory of your shell window (e.g. `nano`), or that if you use a graphical editor, that you can use it to read and write files into the working directory of your shell.
-{: .prereq}
+> You should have used remote HPC facilities before. In particular, you should be happy with connecting
+> using SSH, know what a batch scheduling system is and be familiar with using the Linux command line.
+> You should also be happy editing plain text files in a remote terminal (or, alternatively, editing them
+> on your local system and copying them to the remote HPC system using `scp`).
 
-> If you are looking for a lesson on using *singularity* containers (instead of Docker), see this lesson: 
-> * [Reproducible Computational Environments Using Containers: Introduction to Singularity](https://carpentries-incubator.github.io/singularity-introduction/)
+> ## Requirements
+> Participants must bring a laptop with a Mac, Linux, or Windows operating system (not a tablet,
+> Chromebook, etc.) that they have administrative privileges on. They should have a few specific software
+> packages installed (listed in the Setup section below). They are also required to abide by the
+> [ARCHER2 Training Code of Conduct](https://www.archer2.ac.uk/training/code-of-conduct/).
+
+Note that this lesson uses [The Carpentries](https://carpentries.org) template but this is not a 
+Carpentries lesson.
 
 {% include links.md %}
 
 {% comment %}
-
-TODO: systematically check for Windows-isms
 
 <!--  LocalWords:  prereq links.md endcomment
  -->
