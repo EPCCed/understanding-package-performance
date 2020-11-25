@@ -3,15 +3,17 @@ layout: lesson
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-This lesson aims to introduce basic benchmarking on HPC systems to help users make the most
-efficient use of any resources they have been awarded on the system.
+As parallel packages for computational science become more sophisticated, it becomes more difficult
+for a researcher to understand the most important factors that determine end-to-end productivity
+from initial input data to final result. Aspects such as file IO and data transfer can be just as
+important in practice as the performance and parallel scalability of the application itself. This
+course will provide an introduction to analysing the full research workflow and an introduction
+to benchmarking parallel applications
 
 The lesson aims to answer the following questions:
-  - Why should I benchmark (and potentially profile) my use of research software on HPC systems?
-  - How do I measure performance and which metrics should I use and when?
-  - What is a good approach to benchmark my use of a particular package?
-  - How can I automate the process of benchmarking and collating results?
-  - What can basic profiling show me and how can I access this information?  
+  - How can I understand the end-to-end performance of my research workflow?
+  - How do I measure parallel applicaton performance and which metrics should I use and when?
+  - What practical steps can I take to improve my research workflow?
 
 > ## Prerequisites
 > You should have used remote HPC facilities before. In particular, you should be happy with connecting
