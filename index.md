@@ -12,7 +12,7 @@ to benchmarking parallel applications
 
 The lesson aims to answer the following questions:
   - How can I understand the end-to-end performance of my research workflow?
-  - How do I measure parallel applicaton performance and which metrics should I use and when?
+  - How do I measure parallel application performance and which metrics should I use and when?
   - What practical steps can I take to improve my research workflow?
 
 > ## Prerequisites
