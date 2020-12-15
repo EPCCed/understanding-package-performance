@@ -15,3 +15,5 @@ keypoints:
 ---
 
 ## Workflow components
+
+{% include links.md %}
