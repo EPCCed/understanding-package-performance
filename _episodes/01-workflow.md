@@ -10,7 +10,7 @@ objectives:
 - "Gain a better understanding of my HPC research workflow."
 - "Appreciate the potential impact of performance improvements in the HPC research workflow."
 keypoints:
-- "Your HPC research workflow consists of many components - some of these are manual."
+- "Your HPC research workflow consists of many components."
 - "The potential performance improvement depends on the whole workflow, not just the individual component."
 ---
 
@@ -51,10 +51,61 @@ for any of the calculations to obtain a reasonable model of the system of intere
 
 > ## Your workflow
 > Talk to your neighbour (or rubber duck) and explain your research workflow. In particulr,
-> try to break it down into separate steps or *components*. Why do the components have to 
-> be in the order you have described them?
+> try to break it down into separate steps or *components*. Which of the components are the
+> most time consuming and why? Why do the components have to be in the order you have
+> described them?
 {: .challenge}
 
+## What is worth optimising?
+
+When thinking about your workflow, you should try and assess which components are the most
+time consuming - this may not be a single component, your workflow could have multiple 
+components with similar lengths.
+
+Is the use of HPC one of the most time consuming elements? If not, then improving the
+performance (or time taken) by the HPC component may not actually yield any improvement
+in the time taken for your workflow.
+
+This situation is analogous to transatlantic flight (and to parallel performance on HPC
+systems, as we shall see later!). Transatlantic flight is essentially a very simple 
+workflow:
+
+- Step 1: Travel to the origin airport
+- Step 2: Bag drop and navigate security control
+- Step 3: Board aeroplane
+- Step 4: Fly
+- Step 5: Disembark aeroplane
+- Step 6: Passport control and baggage reclaim
+- Step 7: Leave airport and continue journey
+
+For our example, consider that the "Fly" component is what we are looking at improving
+(say, by designing a faster aeroplane). At the moment, the components take the following
+times:
+
+- Steps 1-3: 3 hours (1 hour travel to the airport, 2 hours to get onto the 'plane)
+- Step 4: 6 hours
+- Steps 5-7: 1 hour
+
+At the moment, flying represents 60% of the time for the total workflow. If we could
+design an aeroplane to reduce the flight time to 3 hours (let's call this 'plane,
+Concorde) then we could reduce the total time to 7 hours and flying would represent
+43% of the time for the total workflow. Any further reductions in flying time would
+have less impact as the other workflow steps start to dominate.
+
+Moving back to a research workflow involving HPC, if the HPC component of the 
+workflow is a low percentage of the total time, then the motivation for optimising
+it (at least in terms of improving the overall workflow) is not very high.
+
+> ## Other motivations
+> Of course, improving the time taken for the overall workflow is not the only
+> reason for optimising and/or understaning the performance of the HPC component.
+> You may also want to maximise the amount of modelling/simulation you can get
+> for the resources you have been allocated. Or, you may want to understand performance
+> to be better able to plan your use of resources in the future.
+{: .callout} 
+
 ## Components and dependencies
+
+
 
 {% include links.md %}
