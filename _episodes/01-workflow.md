@@ -94,11 +94,11 @@ have less impact as the other workflow steps start to dominate.
 
 Moving back to a research workflow involving HPC, if the HPC component of the 
 workflow is a low percentage of the total time, then the motivation for optimising
-it (at least in terms of improving the overall workflow) is not very high.
+it (at least in terms of improving the overall workflow performance) is not very high.
 
 > ## Other motivations
 > Of course, improving the time taken for the overall workflow is not the only
-> reason for optimising and/or understaning the performance of the HPC component.
+> reason for optimising and/or understanding the performance of the HPC component.
 > You may also want to maximise the amount of modelling/simulation you can get
 > for the resources you have been allocated. Or, you may want to understand performance
 > to be better able to plan your use of resources in the future.
@@ -106,6 +106,19 @@ it (at least in terms of improving the overall workflow) is not very high.
 
 ## Components and dependencies
 
+As well as understanding the components that make up your workflow, you should also
+aim to understand the *dependencies* between the components. By dependencies, we mean
+how does progress with one component depend on the output or completion of another
+component. In the simplified workflow examples we have thought about previously, the
+different components were largely sequential - the previous compontent had to complete before
+the next component could be started. In reality, this is not often true: there may be later
+components that are not strictly dependent on completion of previous components. Or, 
+our workflow may be made up of many copies of similar sequential workflows. (Or, even 
+a combination of both of these options.)
 
+When we do not have strict sequential dependencies between components of our workflows
+then there is the potential to make the workflow more efficient by allowing different
+components to overlap in time or run in parallel. For example, consider the following
+simplified workflow:
 
 {% include links.md %}
