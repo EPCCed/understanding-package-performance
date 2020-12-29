@@ -53,6 +53,9 @@ are unlikely to be purchasing your own HPC system so we will not discuss this
 scenario further here!
 
 > ## Both program and input are important
+> Remember, it is not just the application you are benchmarking - it is the combination
+> of the application and the input data that constitute the benchmark case.
+{: .callout}
 
 ## Key benchmarking terminology and concepts
 
@@ -183,6 +186,7 @@ alias srunopt="srun --cpu-bind=rank --time=0:10:0 --account=t001 --partition=sta
 > If you want this alias to persist and be available each time you log into ARCHER2
 > then you can add the `alias` command above to the end of your `~/.bashrc` file on
 > ARCHER2.
+{: .callout}
 
 Now we can run the baseline calculation again with:
 
@@ -368,6 +372,19 @@ Cores    Min   Mean    Max    Min   Mean    Max
 > {: .solution}
 {: .challenge}
 
+
+> ## Why do you want to use benchmarking
+> Think about your use of HPC. What would you want to get out of benchmarking? Would
+> measuring the minimum, maximum, mean or performance variation be appropriate for
+> what you want to do and why?
+> 
+> What parameters would you be interested in varying for the application you want to
+> benchmark?
+{: .challenge}
+
+Now we have collected our benchmarking data we will turn to how to analyse the data,
+understand the performance and make decisions based on it.
+
 > ## Benchmarking the performance of Sharpen: part 1
 > We are going to use the GROMACS molecular dynamics software with a standard input
 > set to explore benchmarking in practice. If you want to explore a piece of software
@@ -392,9 +409,5 @@ Cores    Min   Mean    Max    Min   Mean    Max
 > > 
 > > - 1 node: result 1, result 2, result 3
 {: .challenge}
-
-
-
-
 
 {% include links.md %}
