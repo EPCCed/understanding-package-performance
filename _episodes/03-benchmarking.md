@@ -333,7 +333,8 @@ Cores    Min   Mean    Max    Min   Mean    Max
 > Run a set of calculations to benchmark the performance of the `sharpen-mpi.x` 
 > program with the same input up to 2 full nodes (256 cores). Make sure you keep 
 > the program output in a suitable set of output files that you can use with the
-> `sharpen-perf.py` program.
+> `sharpen-perf.py` program. If you prefer, you can write a job submission script
+> to run these benchmark calculations rather than using `srun` directly.
 >
 > > ## Solution
 > > People often use doubling of the number of MPI processes as a useful first
@@ -381,6 +382,55 @@ Cores    Min   Mean    Max    Min   Mean    Max
 > What parameters would you be interested in varying for the application you want to
 > benchmark?
 {: .challenge}
+
+## Capturing run details
+
+As for determining what the correct performance measure is (min, max, mean), the 
+choice of what details of the benchmark run to capture depend on what you are 
+measuring performance against and why. If the output does not include the values
+you require automatically then you should ensure it is captured in some way.
+
+Here are some concrete examples of scenarios and the information you should 
+ensure is captured:
+
+ - **Comparing performance as a function of number of cores/nodes on a particular HPC system** - In this 
+   case you need to ensure that the output captures the number of cores, nodes,
+   MPI processes, OpenMP threads (depending on what varies). Most applications 
+   will include this information somewhere in their output.
+ - **Comparing performance as input parameters change** - In this case you
+   must ensure that the output captures the value of the input parameters that
+   are changing. These are usually captured in the output by the application
+   itself.
+ - **Comparing performance of applications compiled in different ways** - You 
+   may be comparing the performance of different versions of an application or
+   those compiled using different compilers or with different compile-time 
+   options. These differences will **not** usually be captured by the application
+   itself and so should be captured by yourself in the output in some way (this
+   could be by the name of the directory or files the output is in or by adding
+   details to the output as part of the benchmark run.)
+ - **Comparing performance across different HPC systems**- This is the most 
+   difficult as there is often a lot of differences to capture across different
+   HPC systems. You usually need to capture all of the details that have been
+   mentioned for the previous cases along with other details such as the run time
+   environment and the hardware details of the different systems.
+
+As with all the aspects we have discussed so far, you should plan in advance the
+details that need to be captured as part of your benchmarking activity and how
+they will be captured so you do not need to re-run calculations because you do
+not have a good record of the differences between runs.
+
+## Summary
+
+In this section we have discussed:
+
+ - Basic benchmarking terminology
+ - The difference between timings and performance measures (rates)
+ - Selecting performance metrics
+ - Running benchmark calculations and gathering data
+ - Capturing information on differences between benchmark runs
+
+We also used a simple example program to allow us to collect some benchmark
+data on ARCHER2.
 
 Now we have collected our benchmarking data we will turn to how to analyse the data,
 understand the performance and make decisions based on it.
