@@ -329,6 +329,15 @@ Cores    Min   Mean    Max    Min   Mean    Max
 ```
 {: .output}
 
+Now we have our baseline data. Next, we need to collect data on how the timings
+and performance vary as the number of MPI processes we use for the calculation
+increases. 
+
+## Collecting benchmarking data
+
+Building on your experience so far, the next exercise is to collect the benchmark
+data we will analyse in the next section of the course.
+
 > ## Benchmarking the performance of Sharpen
 > Run a set of calculations to benchmark the performance of the `sharpen-mpi.x` 
 > program with the same input up to 2 full nodes (256 cores). Make sure you keep 
