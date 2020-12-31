@@ -7,13 +7,15 @@ As parallel packages for computational science become more sophisticated, it bec
 for a researcher to understand the most important factors that determine end-to-end productivity
 from initial input data to final result. Aspects such as file IO and data transfer can be just as
 important in practice as the performance and parallel scalability of the application itself. This
-course will provide an introduction to analysing the full research workflow and an introduction
-to benchmarking parallel applications
+course will provide an introduction to understanding your research workflow, the place of HPC
+application performance within the workflow, an introduction to benchmarking parallel applications
+and how you can use benchmark data to make decisions on running your research on HPC systems.
 
 The lesson aims to answer the following questions:
-  - How can I understand the end-to-end performance of my research workflow?
+  - How can I understand the end-to-end performance of my research workflow and, particularly, how 
+    does my use of HPC fit into this workflow?
   - How do I measure parallel application performance and which metrics should I use and when?
-  - What practical steps can I take to improve my research workflow?
+  - What decisions on my use of HPC can I make based on performance measurements?
 
 > ## Prerequisites
 > You should have used remote HPC facilities before. In particular, you should be happy with connecting
