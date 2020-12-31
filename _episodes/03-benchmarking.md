@@ -304,6 +304,9 @@ sharpen_1core_003.out: Overall run time was  3.096 seconds
 
 In my case, the best performance (lowest timing) was from run number 3.
 
+(TODO: alter to create a CSV of all runs and then use VisiData to produce
+the aggregates)
+
 To make the process of extracting the timings and performance data 
 from the sharpen output files easier for you we have written a small
 Python program: `sharpen-perf.py`. This program takes the extension
