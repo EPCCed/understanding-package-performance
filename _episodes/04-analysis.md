@@ -42,7 +42,7 @@ module load cray-python
 module load visidata
 vd perf.csv
 ```
-{: .language-bas}
+{: .language-bash}
 ```
 
  Cores | CalcMin | CalcMean | CalcMax | OverallMin | OverallMean | OverallMax ║

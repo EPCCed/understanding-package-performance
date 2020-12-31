@@ -245,17 +245,16 @@ performance metrics:
 
  - *Calculation time (in s)* and *calculation performance (in Mpixels/s)*: computed
    as calculation time divided by image size in Mpixels.
- - *IO time (in s)* and *IO performance (in Mpixels/s)*: computed by subtracting
-   the calculation time from the overall time and dividing the result by the image
-   size in Mpixels.
+ - *Overall time (in s)* and *Overall performance (in Mpixels/s)*: computed as the
+   overall time and divided by the image size in Mpixels.
 
 So, for the output above:
 
  - Image size in Mpixels = (564 * 770) / 1,000,000 = 0.43428 Mpixels
  - Calculation time = 2.882s
- - IO time = 3.182 - 2.882 = 0.3s
- - Calculation performance = 2.882 / 0.43428 = 6.636 Mpixels/s
- - IO performance = 0.3 / 0.43428 = 0.691 Mpixels/s
+ - Overall time = 3.182s
+ - Calculation performance = 0.43428 / 2.882 = 0.151 Mpixels/s
+ - Overall performance = 0.43428 / 3.182 = 0.136 Mpixels/s
 
 ### Combining multiple runs
 
@@ -284,9 +283,9 @@ The answer depends on what you are measuring and why. Some examples:
    values, maybe as a percentage of the mean performance.
 
 In this case, we are interested in the change in performance as we change the
-number of MPI processes (or cores used) so we will use the maximum performance
-(minimum timing values) from the multiple runs. You can look at this more 
-conveniently using the `grep` command:
+number of MPI processes (or cores used) so we will use the minimum timing value
+from the multiple runs (as this corresponds to the maximum measured performance).
+You can look at this more conveniently using the `grep` command:
 
 ```
 grep time *.out
@@ -304,31 +303,22 @@ sharpen_1core_003.out: Overall run time was  3.096 seconds
 
 In my case, the best performance (lowest timing) was from run number 3.
 
-(TODO: alter to create a CSV of all runs and then use VisiData to produce
-the aggregates)
-
 To make the process of extracting the timings and performance data 
 from the sharpen output files easier for you we have written a small
-Python program: `sharpen-perf.py`. This program takes the extension
-of the output files ("out" in our examples above) and extracts and 
-combines the timings and performance data. For example:
+Python program: `sharpen-data.py`. This program takes the extension
+of the output files ("out" in our examples above), extracts the
+data required to compute performance (image size and timings) and
+saves them in a CSV (comma-separated values) file.
 
 ```
-sharpen-perf.py out
+sharpen-data.py out
 ```
 {: .language-bash}
 ```
-
-Timings (s):
-      Calculation          IO                  
-Cores    Min   Mean    Max    Min   Mean    Max
-    1  2.844  2.861  2.882  0.252  0.271  0.300
-
-Performance (Mpixel/s):
-      Calculation          IO                  
-Cores    Min   Mean    Max    Min   Mean    Max
-    1  0.151  0.152  0.153  1.448  1.603  1.723
-
+Cores        Size      Calc   Overall
+    1    0.434280     2.844     3.096
+    1    0.434280     2.857     3.118
+    1    0.434280     2.882     3.182
 ```
 {: .output}
 
@@ -345,7 +335,7 @@ data we will analyse in the next section of the course.
 > Run a set of calculations to benchmark the performance of the `sharpen-mpi.x` 
 > program with the same input up to 2 full nodes (256 cores). Make sure you keep 
 > the program output in a suitable set of output files that you can use with the
-> `sharpen-perf.py` program. If you prefer, you can write a job submission script
+> `sharpen-data.py` program. If you prefer, you can write a job submission script
 > to run these benchmark calculations rather than using `srun` directly.
 >
 > > ## Solution
@@ -354,37 +344,259 @@ data we will analyse in the next section of the course.
 > > this gives the following runs: 2, 4, 8, 16, 32, 64, 128 and 256 MPI processes.
 > >
 > > ```
-> > 
-> > Timings (s):
-> >       Calculation          IO                  
-> > Cores    Min   Mean    Max    Min   Mean    Max
-> >     1  2.844  2.861  2.882  0.252  0.271  0.300
-> >     2  1.432  1.437  1.446  0.252  0.276  0.324
-> >     4  0.717  0.724  0.727  0.253  0.255  0.257
-> >     8  0.359  0.360  0.360  0.255  0.257  0.258
-> >    16  0.181  0.183  0.187  0.269  0.269  0.270
-> >    32  0.093  0.093  0.094  0.269  0.270  0.271
-> >    64  0.053  0.053  0.053  0.269  0.272  0.274
-> >   128  0.029  0.029  0.029  0.285  0.308  0.351
-> >   256  0.016  0.016  0.016  0.293  0.295  0.298
-> >
-> > Performance (Mpixel/s):
-> >       Calculation          IO                  
-> > Cores    Min   Mean    Max    Min   Mean    Max
-> >     1  0.151  0.152  0.153  1.448  1.603  1.723
-> >     2  0.300  0.302  0.303  1.340  1.572  1.723
-> >     4  0.597  0.600  0.606  1.690  1.703  1.717
-> >     8  1.206  1.207  1.210  1.683  1.690  1.703
-> >    16  2.322  2.373  2.399  1.608  1.612  1.614
-> >    32  4.620  4.653  4.670  1.603  1.610  1.614
-> >    64  8.194  8.194  8.194  1.585  1.597  1.614
-> >   128 14.975 14.975 14.975  1.237  1.412  1.524
-> >   256 27.142 27.142 27.142  1.457  1.472  1.482
+> > Cores        Size      Calc   Overall
+> >    16    0.434280     0.181     0.450
+> >     2    0.434280     1.432     1.684
+> >     4    0.434280     0.727     0.982
+> >   256    0.434280     0.016     0.310
+> >   128    0.434280     0.029     0.314
+> >    64    0.434280     0.053     0.326
+> >     1    0.434280     2.844     3.096
+> >   256    0.434280     0.016     0.314
+> >    32    0.434280     0.093     0.362
+> >     8    0.434280     0.360     0.615
+> >     8    0.434280     0.360     0.618
+> >   128    0.434280     0.029     0.316
+> >    64    0.434280     0.053     0.327
+> >    32    0.434280     0.093     0.364
+> >     2    0.434280     1.446     1.770
+> >     2    0.434280     1.432     1.685
+> >     4    0.434280     0.727     0.984
+> >    16    0.434280     0.187     0.457
+> >     1    0.434280     2.857     3.118
+> >    32    0.434280     0.094     0.363
+> >   256    0.434280     0.016     0.309
+> >     8    0.434280     0.359     0.617
+> >     4    0.434280     0.717     0.970
+> >    16    0.434280     0.181     0.450
+> >    64    0.434280     0.053     0.322
+> >     1    0.434280     2.882     3.182
+> >   128    0.434280     0.029     0.380
 > > ```
-> > {: .language-bash}
+> > {: .output}
 > {: .solution}
 {: .challenge}
 
+## Aggregating data
+
+Next we want to aggregate the data from our multiple runs at particular core counts -
+remember that, in this case, we want the minimum timing (maximum performance) from the
+runs to use to compute the performance. To complete these steps we are going to make
+use of the [VisiData tool](https://www.visidata.org/) which allows us to manipulate and
+visualise tabular data in the terminal.
+
+As well as printing the timing data to the screen, the `sharpen-data.py` program also
+produces a file called `benchmark_runs.csv` with the data in CSV (comma-separated value)
+format that we can use with VisiData. Let's load the timing data into VisiData:
+
+```
+module load cray-python
+module load visidata
+vd benchmark_runs.csv
+```
+{: .language-bash}
+```
+ Cores | Size     | Calc  | Overall ║
+ 16    | 0.434280 | 0.181 | 0.450   ║
+ 2     | 0.434280 | 1.432 | 1.684   ║
+ 4     | 0.434280 | 0.727 | 0.982   ║
+ 256   | 0.434280 | 0.016 | 0.310   ║
+ 128   | 0.434280 | 0.029 | 0.314   ║
+ 64    | 0.434280 | 0.053 | 0.326   ║
+ 1     | 0.434280 | 2.844 | 3.096   ║
+ 256   | 0.434280 | 0.016 | 0.314   ║
+ 32    | 0.434280 | 0.093 | 0.362   ║
+ 8     | 0.434280 | 0.360 | 0.615   ║
+ 8     | 0.434280 | 0.360 | 0.618   ║
+ 128   | 0.434280 | 0.029 | 0.316   ║
+ 64    | 0.434280 | 0.053 | 0.327   ║
+ 32    | 0.434280 | 0.093 | 0.364   ║
+ 2     | 0.434280 | 1.446 | 1.770   ║
+ 2     | 0.434280 | 1.432 | 1.685   ║
+ 4     | 0.434280 | 0.727 | 0.984   ║
+ 16    | 0.434280 | 0.187 | 0.457   ║
+ 1     | 0.434280 | 2.857 | 3.118   ║
+ 32    | 0.434280 | 0.094 | 0.363   ║
+ 256   | 0.434280 | 0.016 | 0.309   ║
+1› benchmark_runs| user_macros | saul.pw/VisiData v2.1 | opening benchmark_runs.csv a           27 rows 
+```
+{: .output}
+
+Your terminal will now show a spreadsheet interface with the timing data from
+your benchmark runs. You can navigate between different cells using the arrow 
+keys on your keyboard or by using your mouse. 
+
+We are now going to use VisiData to aggregate the timing data from our runs. To
+do this, we first need to let the tool know what type of numerical data is in
+each of the columns.
+
+Select the "Cores" column and hit `#` to set it as integer data, 
+next select the "Size" column and hit `%` to set it as floating point
+data; select the "Calc" column and hit `%` to set it as 
+floating point data too; finally, select the "Overall" column and hit `%` to
+set it as  floating point data. Your terminal should now look something like:
+
+```
+ Cores#| Size    %| Calc %| Overall%║
+    16 |     0.43 |  0.18 |    0.45 ║
+     2 |     0.43 |  1.43 |    1.68 ║
+     4 |     0.43 |  0.73 |    0.98 ║
+   256 |     0.43 |  0.02 |    0.31 ║
+   128 |     0.43 |  0.03 |    0.31 ║
+    64 |     0.43 |  0.05 |    0.33 ║
+     1 |     0.43 |  2.84 |    3.10 ║
+   256 |     0.43 |  0.02 |    0.31 ║
+    32 |     0.43 |  0.09 |    0.36 ║
+     8 |     0.43 |  0.36 |    0.61 ║
+     8 |     0.43 |  0.36 |    0.62 ║
+   128 |     0.43 |  0.03 |    0.32 ║
+    64 |     0.43 |  0.05 |    0.33 ║
+    32 |     0.43 |  0.09 |    0.36 ║
+     2 |     0.43 |  1.45 |    1.77 ║
+     2 |     0.43 |  1.43 |    1.69 ║
+     4 |     0.43 |  0.73 |    0.98 ║
+    16 |     0.43 |  0.19 |    0.46 ║
+     1 |     0.43 |  2.86 |    3.12 ║
+    32 |     0.43 |  0.09 |    0.36 ║
+   256 |     0.43 |  0.02 |    0.31 ║
+1› benchmark_runs|                                                         %  type-float        27 rows 
+```
+{: .output}
+
+Next, we want to tell VisiData how to aggregate the data in each of the columns. Remember,
+we want the minimum value of the timings from the "Calc" and "Overall" columns. Highlight
+the "Calc" column and hit `+`, select `min` from the list of aggregators and press Return.
+Do the same for the "Overall" column. We also want to keep the size value in our aggregated 
+table so select an aggregator for that column too (min or max are fine here as every row
+has the same value). Once you have set the aggregators, select the "Cores" column and 
+hit "Shift+f" to perform the aggregation. You should see a new table that looks something
+like:
+
+```
+ Cores#║ count♯| Size_min%| Calc_min%| Overall_min%║
+    16 ║     3 |     0.43 |     0.18 |        0.45 ║
+     2 ║     3 |     0.43 |     1.43 |        1.68 ║
+     4 ║     3 |     0.43 |     0.72 |        0.97 ║
+   256 ║     3 |     0.43 |     0.02 |        0.31 ║
+   128 ║     3 |     0.43 |     0.03 |        0.31 ║
+    64 ║     3 |     0.43 |     0.05 |        0.32 ║
+     1 ║     3 |     0.43 |     2.84 |        3.10 ║
+    32 ║     3 |     0.43 |     0.09 |        0.36 ║
+     8 ║     3 |     0.43 |     0.36 |        0.61 ║
+
+2› benchmark_runs_Cores_freq|                                                        F           9 bins 
+```
+{: .output}
+
+The final detail to tidy the aggregated data up before we save it, is to sort by
+increasing core count. Select the "Cores" column and hit `[` to sort ascending.
+
+Finally, we will save this aggregated data as another CSV file. Hit "Ctrl+s" and
+change the file name to `benchmark_agg.csv`). Now, you can exit VisiData by typing
+`gq`. We will use this CSV file in the next section to compute the performance.
+
+## Computing performance
+
+Load up VisiData again with the aggregate timing data:
+
+```
+vd benchmark_agg.csv
+```
+{: .language-bash}
+```
+ Cores | count | Size_min | Calc_min | Overall_min ║
+ 1     | 3     | 0.43     | 2.84     | 3.10        ║
+ 2     | 3     | 0.43     | 1.43     | 1.68        ║
+ 4     | 3     | 0.43     | 0.72     | 0.97        ║
+ 8     | 3     | 0.43     | 0.36     | 0.61        ║
+ 16    | 3     | 0.43     | 0.18     | 0.45        ║
+ 32    | 3     | 0.43     | 0.09     | 0.36        ║
+ 64    | 3     | 0.43     | 0.05     | 0.32        ║
+ 128   | 3     | 0.43     | 0.03     | 0.31        ║
+ 256   | 3     | 0.43     | 0.02     | 0.31        ║
+
+1› benchmark_agg| user_macros | saul.pw/VisiData v2.1 | opening benchmark_agg.csv as             9 rows 
+```
+{: .output}
+
+Now we are going to create new columns with the performance (in Mpixels/s) which
+we will use in the next section when we analyse the data.
+
+The maximum calculation performance is computed as the size divided by the minimum 
+calculation timing. We can use VisiData to compute this for us but first we need to
+tell the tool what numerical data is in each column (as we did for aggregating the
+data, if we had not quit VisiData, we could skip this step). So, set the Cores
+column as integer data (using `#`) and the other columns as floating point data 
+(using `%`).
+
+Now, select the "Calc_min" column and hit `=`, VisiData now asks us for a formula
+to use to compute a new column. Enter `Size_min / Calc_min`. This should create
+a new column with the performance:
+
+```
+ Cores#| count | Size_min%| Calc_min%| Size_min/Calc_min  | Overall_min%║
+     1 | 3     |     0.43 |     2.84 | 0.151408450704225…%|        3.10 ║
+     2 | 3     |     0.43 |     1.43 | 0.300699300699300…%|        1.68 ║
+     4 | 3     |     0.43 |     0.72 | 0.5972222222222222%|        0.97 ║
+     8 | 3     |     0.43 |     0.36 | 1.1944444444444444%|        0.61 ║
+    16 | 3     |     0.43 |     0.18 | 2.388888888888889 %|        0.45 ║
+    32 | 3     |     0.43 |     0.09 | 4.777777777777778 %|        0.36 ║
+    64 | 3     |     0.43 |     0.05 | 8.6               %|        0.32 ║
+   128 | 3     |     0.43 |     0.03 | 14.333333333333334%|        0.31 ║
+   256 | 3     |     0.43 |     0.02 | 21.5              %|        0.31 ║
+
+1› benchmark_agg|                                        BUTTON1_RELEASED  release-mouse         9 rows 
+
+```
+{: .output}
+
+Move to the new column and set it to floating point data. We can also rename
+the column to be more descriptive: hit `^` and give it the name `Calc_perf_max`.
+
+```
+ Cores#| count | Size_min%| Calc_min%| Calc_perf_max     %| Overall_min%║
+     1 | 3     |     0.43 |     2.84 |               0.15 |        3.10 ║
+     2 | 3     |     0.43 |     1.43 |               0.30 |        1.68 ║
+     4 | 3     |     0.43 |     0.72 |               0.60 |        0.97 ║
+     8 | 3     |     0.43 |     0.36 |               1.19 |        0.61 ║
+    16 | 3     |     0.43 |     0.18 |               2.39 |        0.45 ║
+    32 | 3     |     0.43 |     0.09 |               4.78 |        0.36 ║
+    64 | 3     |     0.43 |     0.05 |               8.60 |        0.32 ║
+   128 | 3     |     0.43 |     0.03 |              14.33 |        0.31 ║
+   256 | 3     |     0.43 |     0.02 |              21.50 |        0.31 ║
+
+1› benchmark_agg|                                        BUTTON1_RELEASED  release-mouse         9 rows 
+
+```
+{: .output}
+
+> ## Compute the Overall maximum performance at each core count
+> Add a column called `Overall_perf_max` that contains the Overall maximum performance
+> at each core count and that is formatted as floating point values.
+> > ## Solution
+> > Select the "Overall_min" column and hit `=`, VisiData now asks us for a formula
+> > to use to compute a new column. Enter `Size_min / Overall_min`. Move to the
+> > new column and hit `%` to format it as floating point values and then hit `^`
+> > to rename it `Overall_perf_max`. The final table should look something like:
+> > ```
+> >  Cores#| count | Size_min%| Calc_min%| Calc_perf_max     %| Overall_min%| Overall_perf_max    %║
+> >      1 | 3     |     0.43 |     2.84 |               0.15 |        3.10 |                 0.14 ║
+> >      2 | 3     |     0.43 |     1.43 |               0.30 |        1.68 |                 0.26 ║
+> >      4 | 3     |     0.43 |     0.72 |               0.60 |        0.97 |                 0.44 ║
+> >      8 | 3     |     0.43 |     0.36 |               1.19 |        0.61 |                 0.70 ║
+> >     16 | 3     |     0.43 |     0.18 |               2.39 |        0.45 |                 0.96 ║
+> >     32 | 3     |     0.43 |     0.09 |               4.78 |        0.36 |                 1.19 ║
+> >     64 | 3     |     0.43 |     0.05 |               8.60 |        0.32 |                 1.34 ║
+> >    128 | 3     |     0.43 |     0.03 |              14.33 |        0.31 |                 1.39 ║
+> >    256 | 3     |     0.43 |     0.02 |              21.50 |        0.31 |                 1.39 ║
+> > 
+> > 1› benchmark_agg| "Overall_perf_max"                                       ^  rename-col         9 rows 
+> > ```
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+Finally, save this data in a CSV file called `benchmark_perf.csv` and exit VisiData.
 
 > ## Why do you want to use benchmarking
 > Think about your use of HPC. What would you want to get out of benchmarking? Would
