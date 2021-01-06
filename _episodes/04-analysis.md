@@ -171,6 +171,7 @@ two metrics that we introduced earlier:
 > You can exclude columns from plots by hiding them by highlighting the column
 > and hitting `-`. You can unhide all columns once you have finished plotting
 > with `gv`.
+> 
 > ## Solution
 > > ### Computing speedup
 > > Note the value for the "Calc_perf_max" on one core - this is the baseline
@@ -243,6 +244,7 @@ two metrics that we introduced earlier:
 > > spreadsheet view and `gv` to unhide the hidden columns.
 > > {: .output}
 > > 
+> {: .solution}
 {: .challenge}
 
 ### Speedup and performance
