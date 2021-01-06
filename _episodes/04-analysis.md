@@ -1,7 +1,7 @@
 ---
 title: "Analysing performance"
 teaching: 30
-exercises: 10
+exercises: 30
 questions:
 - "How do I analyse the results of my benchmarking?"
 - "Which metrics can I use to make decisions about the best way to run my calculations?"
@@ -10,7 +10,7 @@ questions:
 objectives:
 - "Understand how to analyse and understand the performance of your HPC use."
 - "Understand speedup and parallel efficiency metrics and how they can support decisions."
-- "Have an awareness of the limits of parallel scaling: Amdahl's Law and Gustavson's Law."
+- "Have an awareness of the limits of parallel scaling: Amdahl's Law and Gustafson's Law."
 keypoints:
 - "You can use benchmarking data to make decisions on how to best use your HPC resources."
 - "Parallel efficiency is often the key decision metric for limits of parallel scaling."
@@ -358,8 +358,91 @@ in Amdahl's Law (strong scaling) and Gustafson's Law (weak scaling).
 
 ### Strong scaling limits: Amdahl's Law
 
+*“The performance improvement to be gained by parallelisation is limited
+by the proportion of the code which is serial”* - Gene Amdahl, 1967
+
+What does this actually mean? We can see what this means from the sharpen 
+example that we have been looking at. The reason that this example stops
+scaling Overall even though the Calculation part scales well is because there
+is a serial part of the code (the IO: reading the input and writing the 
+output). Here I have computed the IO time by subtracting the Calculation
+time from the Overall time. The "IO_min" column shows the time taken for
+the IO part and the "Fraction_IO" column shows what fraction of the total
+runtime is taken up by IO.
+
+```
+ Cores | Calc_min%| Overall_min%| IO_min              %| Fraction_IO        %║
+ 1     |     2.84 |        3.10 |                 0.26 |                0.08 ║
+ 2     |     1.43 |        1.68 |                 0.25 |                0.15 ║
+ 4     |     0.72 |        0.97 |                 0.25 |                0.26 ║
+ 8     |     0.36 |        0.61 |                 0.25 |                0.41 ║
+ 16    |     0.18 |        0.45 |                 0.27 |                0.60 ║
+ 32    |     0.09 |        0.36 |                 0.27 |                0.75 ║
+ 64    |     0.05 |        0.32 |                 0.27 |                0.84 ║
+ 128   |     0.03 |        0.31 |                 0.28 |                0.90 ║
+ 256   |     0.02 |        0.31 |                 0.29 |                0.94 ║
+
+1› benchmark_perf|                                  -  hide-col         9 rows 
+```
+
+What do we see? The IO time is constant as the number of cores increases indicating 
+that this part of the code is serial (it does not benefit from more cores). As the 
+number of cores increases, the serial part becomes a larger and larger fraction of
+the overall run time (the calculation time decreases as it benefits from 
+parallelisation). In the end, it is this serial part of the code that limits the
+parallel scalability.
+
+Even in the absence of any overheads to parallelisation, the speedup of a parallel
+code is limited by the fraction of serial work for the application (parallel
+program + specific input). Specifically, the maximum speedup that can be achieved
+for *any* number of parallel resources (cores in our case) is given by 1/&alpha;,
+where &alpha; is the fraction of serial work in our application.
+
+If we go back and look at our baseline result at 1 core, we can see that the fraction
+of serial work (the IO part) is 0.08 so the maximum speedup we can potentially achieve
+for this application is 1/0.08 = 12.5. The maximum speedup we actually observe
+in is around 10 (because the parallel section does not parallelise perfectly at
+larger core counts due to parallel overheads).
+
+> ## Lots of parallelisation needed...
+> If we could reduce the serial fraction to 0.01 (1%) of the application then we would
+> still be limited to a maximum speedup of 100 no matter how many cores you use. On 
+> ARCHER2, there are 128 cores on a node and typical calculations may use more than
+> 1000 cores so you can start to imagine how much work has to go into parallelising
+> applications!
+{: .callout}
+
 ### Weak scaling limits: Gustafson's Law
 
-## Tips for analysing and plotting performance data
+For weak scaling applications - where the size of the application increases as you
+increase the amount of HPC resource - the serial component does not dominate in the
+same way. Gustafson's Law states that for a number of cores, P, and an application
+with serial fraction &alpha;, the scaling (assuming no parallel overheads) is given
+by P - &alpha;(P-1). For example, for an application with &alpha;=0.01 (1% serial)
+on 1024 cores (8 ARCHER2 nodes) the maximum speedup will be 1013.77 and this will
+keep increasing as we increase the core count.
+
+If you contrast this to the limits for strong scaling given by Amdahl's Law for a
+similar serial fraction of code and you can see why good strong scaling is usually
+harder to achieve.
+
+> ## Why not always use weak scaling approaches?
+> Given the better prospects for scaling applications using a weak scaling 
+> approach, why do you think this approach is not always used for parallelising 
+> applications on HPC systems?
+> > ## Solution
+> > In many cases, using weak scaling approaches may not be an option for us.
+> > Some potential reasons are:
+> >  - An increased problem size has no relevance to the work we are doing
+> >  - Our time would be better used running multiple copies of smaller systems
+> >    rather than fewer large calculations
+> >  - There is no scope for increasing the problem size
+> {: .solution}
+{: .challenge}
+
+Now we should have a good handle on how we go about benchmarking performance of
+applications on HPC systems and how to analyse and understand the performance. 
+In the next section we look at how to automate the collection and analysis of
+performance data.
 
 {% include links.md %}
