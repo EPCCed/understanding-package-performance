@@ -659,29 +659,4 @@ data on ARCHER2.
 Now we have collected our benchmarking data we will turn to how to analyse the data,
 understand the performance and make decisions based on it.
 
-> ## Benchmarking the performance of Sharpen: part 1
-> We are going to use the GROMACS molecular dynamics software with a standard input
-> set to explore benchmarking in practice. If you want to explore a piece of software
-> you use in your research with your own input case, then please feel free to 
-> do this.
->
-> The first step is to understand what performance metric you will use and
-> plan the initial set of benchmark runs. For GROMACS, the performance metric
-> we will use is ns/day as this is conveniently reported by the GROMACS software.
->
-> Plan an initial set of benchmark runs to explore how the performance
-> of GROMACS changes as you increase the number of nodes?
->
-> Run the the benchmark runs and record the performance.
->
-> > ## Solution
-> > A good initial set of runs would be 1, 2, 4, 8 and 16 nodes with three runs
-> > of each of them. Performance will be measured as the maximum performance from
-> > the three individual runs.
-> >
-> > Example benchmarking data (TODO: add example results)
-> > 
-> > - 1 node: result 1, result 2, result 3
-{: .challenge}
-
 {% include links.md %}
