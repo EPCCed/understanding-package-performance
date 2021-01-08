@@ -10,7 +10,7 @@ objectives:
 - "Understand how automation can help with performance measurements."
 - "See how different automation approaches work in practice."
 keypoints:
-- ""
+- "Automation can help make benchmarking more rigourous"
 ---
 
 We now know how to collect basic benchmark performance data and how to analyse it
