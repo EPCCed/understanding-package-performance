@@ -14,15 +14,15 @@ Modern versions of Windows have SSH available in Powershell. You can test if it 
 installed, you should see some useful output. If it is not installed, you will get an error. If SSH is not available in Powershell, then
 you should install MobaXterm as described below.
 
-An alternative is to install MobaXterm from [http://mobaxterm.mobatek.net](http://mobaxterm.mobatek.net). You will want to get the Home edition (Installer edition). However, if Git Bash works, you do not need this.
+An alternative is to install MobaXterm from [http://mobaxterm.mobatek.net](http://mobaxterm.mobatek.net). You will want to get the Home edition (Installer edition). However, if Powershell works, you do not need this.
 
 **macOS**
 
-macOS comes with SSH pre-installed, so you should not need to install anything.
+macOS comes with SSH pre-installed, so you should not need to install anything. Use your "Terminal" app.
 
 **Linux**
 
-Linux users do not need to install anything, you should be set!
+Linux users do not need to install anything, you should be set! Use your terminal application.
 
 ## Account on ARCHER2
 
@@ -46,7 +46,7 @@ If you are already registered on the ARCHER or Tier-2 SAFE you do not need to re
 
 1. [Login to SAFE](https://safe.epcc.ed.ac.uk)
 2. Go to the Menu "Login accounts" and select "Request login account"
-3. Choose the `ta007` project “Choose Project for Machine Account” box and click "Next"
+3. Choose the `ta012` project “Choose Project for Machine Account” box and click "Next"
 4. On the next page, the ARCHER2 system should be selected. Click "Next"
 5. Enter the username you would prefer to use on ARCHER2. Every username must be unique, so if your chosen name is taken, you will need to choose another
 
