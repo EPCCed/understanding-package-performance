@@ -1,26 +1,28 @@
 ---
-title: "Overview of the ARCHER2 system"
-teaching: 30
+title: "Overview of the ARCHER2 and connecting"
+teaching: 15
 exercises: 15
 questions:
 - "What hardware and software is available on ARCHER2?"
 - "How does the hardware fit together?"
+- "How do I connect to ARCHER2?"
 objectives:
 - "Gain an overview of the technology available on the ARCHER2 service."
+- "Understand how to connect to ARCHER2."
 keypoints:
 - "ARCHER2 consists of high performance login nodes, compute nodes, storage systems and interconnect."
-- "There is a wide range of software available on ARCHER2."
 - "The system is based on standard Linux with command line access."
+- "ARCHER2's login address is `login.archer2.ac.uk`."
+- "You connect to ARCHER2 using an SSH client."
 ---
 
 ## Architecture
 
-The ARCHER2 Cray Shasta system consists of a number of different node types. The ones visible
+The ARCHER2 hardware is an HPE Cray EX system consists of a number of different node types. The ones visible
 to users are:
 
 * Login nodes
 * Compute nodes
-* Data analysis (pre-/post- processing) nodes
 
 All of the node types have the same processors: AMD EPYC Zen2 7742, 2.25GHz, 64-cores. All nodes
 are dual socket nodes so there are 128 cores per node.
@@ -29,24 +31,13 @@ are dual socket nodes so there are 128 cores per node.
 
 ## Compute nodes
 
-There are 5,848 compute nodes in total giving 748,544 compute cores on ARCHER2. There
-are 5,556 standard compute nodes with 256 GiB memory per node and 292 high memory 
-compute nodes with 512 GiB of memory per node. All of the compute nodes are linked
-together using the high-performance Cray Slingshot interconnect.
+There are 1,024 compute nodes in total in the 4 cabinet system giving a total of 131,072 compute cores
+(there will be 5,848 nodes on the full ARCHER2 system, 748,544 compute cores). All
+compute nodes on the 4 cabinet system with 256 GiB memory per node. All of the compute
+nodes are linked together using the high-performance Cray Slingshot interconnect.
 
 Access to the compute nodes is controlled by the Slurm scheduling system which supports
 both batch jobs and interactive jobs.
-
-Compute node summary (with comparison to ARCHER):
-
-| | ARCHER2 | ARCHER |
-|-|---------|--------|
-| Processors | 2x AMD EPYC Zen2 (Rome) 7742, 2.25 GHz, 64-core | 2x Intel E5-2697 v2, 2.7 GHz, 12-core | 
-| Cores per node | 128 | 24 |
-| NUMA | 8 NUMA regions per node, 16 cores per NUMA region | 2 NUMA regions per node, 12 cores per NUMA region |
-| Memory Capacity | 256/512 GB DDR 3200, 8 memory channels | 64/128 GB DDR 1666, 4 memory channels |
-| Memory Bandwidth | >380 GB/s per node | >119 GB/s per node |
-| Interconnect Bandwidth | 25 GB/s per node bi-directional | 15 GB/s per node bi-directional |
 
 ## Storage
 
@@ -83,30 +74,9 @@ directory* will be at:
 > stored in the `$HOME` environment variable and that can be accessed with the `cd ~` command.
 {: .callout}
 
-You can view your home file system quota and use through SAFE. Use the *Login account* menu
-to select the account you want to see the information for. The account summary page will
-contain information on your home file system use and any quotas (user or project) that
-apply to that account. (SAFE home file system use data is updated daily so the information
-may not quite match the state of the system if a large change has happened recently. Quotas
-will be completely up to date as they are controlled by SAFE.)
-
-> ## Subprojects?
-> Some large projects may choose to split their resources into multiple subprojects. These 
-> subprojects will have identifiers prepended with the main project ID. For example, the
-> `rse` subgroup of the `t01` project would have the ID `t01-rse`. If the main project has
-> allocated storage quotas to the subproject the directories for this storage will be 
-> found at, for example:
-> ```
-> /home/t01/t01-rse/auser
-> ```
-> Your Linux home directory will generally not be changed when you are made a member of 
-> a subproject so you must change directories manually (or change the ownership of files)
-> to make use of this different storage quota allocation.
-{: .callout}
-
 ### Work
 
-The work file systems, which are available on the login, compute and data analysis nodes, are
+The work file systems, which are available on the login and compute  nodes, are
 designed for high performance parallel access and are the primary location that jobs running on
 the compute nodes will read data from and write data to. They are based on the Lustre parallel
 file system technology. The work file systems are not backed up in any way. There is a total of 
@@ -130,157 +100,6 @@ directory will be at:
 > rather than Home. Remember, the home file systems are not visible from the compute nodes.
 {: .callout}
 
-You can view your work file system use and quota through SAFE in the same way as described 
-for the home file system above. If you want more up to date information, you can query 
-the quotas and use directly on ARCHER2 itself using the `lfs quota` command. For example,
-to query your project quota on the work file system you could use:
-
-<!-- TODO update with correct command for ARCHER2 -->
-
-```
-lfs quota -hg t01 /fs3
-```
-{: .language-bash}
-```
-Disk quotas for group t01 (gid 1001):
-     Filesystem    used   quota   limit   grace   files   quota   limit   grace
-           /fs3  17.24T      0k  21.95T       - 6275076       0 10000000       -
-```
-{: .output}
-
-(Remember to replace `t01` with your project code.) The `used` column shows how much space
-the whole project is using and the `limit` column shows how much quota is available for the
-project. You can show your own user's use and quota with:
-
-```
-lfs quota -hu auser /fs3
-```
-{: .language-bash}
-```
-Disk quotas for user auser (uid 5496):
-     Filesystem    used   quota   limit   grace   files   quota   limit   grace
-           /fs3  8.526T      0k      0k       -  764227       0       0       -
-```
-{: .output}
-
-A limit of 0k here shows that no user quota is in place (but you are still bound by an overall
-project quota in this case.)
-
-### Solid State
-
-The solid state storage system is available on the compute nodes and is designed for
-the highest read and write performance to improve performance of workloads that are I/O bound in
-some way. Access to solid state storage resources is controlled through the Slurm scheduling 
-system. The solid state storage is not backed up in any way. There is a total of 1.1 PB usable
-space available on the solid state storage system.
-
-Data on the solid state storage is transient so all data you require before a job starts or
-after a job finishes must be *staged* on to or off of the solid state storage. We discuss how
-this works in the Scheduler episode later.
-
-### Sharing data with other users
-
-Both the home and work file systems have special directories that allow you to share data 
-with other users. There are directories that allow you to share data only with other users
-in the same project and directories that allow you tot share data with users in other projects.
-
-To share data with users in the same project you use the `/work/t01/t01/shared` directory
-(remember to replace `t01` with your project ID) and make sure the permissions on the 
-directory are correctly set to allow sharing in the project:
-
-```
-auser@login01-nmn:~> mkdir /work/t01/t01/shared/interesting-data
-auser@login01-nmn:~> cp -r modelling-output /work/t01/t01/shared/interesting-data/
-auser@login01-nmn:~> chmod -R g+rX,o-rwx /work/t01/t01/shared/interesting-data
-auser@login01-nmn:~> ls -l /work/t01/t01/shared
-```
-{: .language-bash}
-```
-total 150372
-
-...snip...
-
-drwxr-s---  2 auser  z01      4096 Jul 20 12:09 interesting-data
-
-..snip...
-
-```
-{: .output}
-
-To share data with users in other projects, you use the `/work/t01/shared` directory
-(remember to replace `t01` with your project ID) and make sure the permissions on the 
-directory are correctly set to allow sharing with all other users:
-
-```
-auser@login01-nmn:~> mkdir /work/t01/shared/more-interesting-data
-auser@login01-nmn:~> cp -r more-modelling-output /work/t01/shared/more-interesting-data/
-auser@login01-nmn:~> chmod -R go+rX /work/t01/shared/more-interesting-data
-auser@login01-nmn:~> ls -l /work/t01/shared
-```
-{: .language-bash}
-```
-total 150372
-
-...snip...
-
-drwxr-sr-x  2 auser  z01      4096 Jul 20 12:09 more-interesting-data
-
-..snip...
-
-```
-{: .output}
-
-Remember, equivalent sharing directories exist on the home file system that you can
-use in exactly the same way.
-
-## System software
-
-The ARCHER2 system runs the *Cray Linux Environment* which is based on SUSE Enterprise Linux.
-The service officially supports the *bash* shell for interactive access, shell scripting and
-job submission scripts. The scheduling software is SLURM.
-
-As well as the hardware and system software, Cray supply the Cray Programming Environment which
-contains:
-
-| Compilers | GCC, Cray Compilers (CCE), AMD Compilers (AOCC) |
-| Parallel libraries | Cray MPI (MPICH2-based), OpenSHMEM, Global Arrays |
-| Scientific and numerical libraries | BLAS/LAPACK/BLACS/ScaLAPACK (Cray LibSci, AMD AOCL), FFTW3, HDF5, NetCDF |
-| Debugging and profiling tools | gdb4hpc, valgrind4hpc, CrayPAT + others |
-| Optimised Python 3 environment | numpy, scipy, mpi4py, dask |
-| Optimised R environment | standard packages (including "parallel") |
-
-The largest differences from ARCHER are:
-   - Addition of optimised Python 3 and R environments
-   - Lack of Intel compilers and MKL libraries
-   - Lack of Arm Forge: DDT debugger and MAP profiler
-
-On top of the Cray-provided software, the EPCC ARCHER2 CSE service have installed a wide range 
-of modelling and simulation software, additional scientific and numeric libraries, data analysis
-tools and other useful software. Some examples of the software installed are:
-
-| Research area | Software |
-|-|-|
-| Materials and molecular modelling | CASTEP, ChemShell, CP2K, Elk, LAMMPS, NWChem, ONETEP, Quantum Espresso, VASP |
-| Engineering | Code Saturne, FEniCS, OpenFOAM |
-| Biomolecular modelling | GROMACS, NAMD |
-| Earth system modelling | MITgcm, Met Office UM, Met Office LFRic, NEMO |
-| Scientific libraries | ARPACK, Boost, Eigen, ELPA, GSL, HYPRE, METIS, MUMPS, ParaFEM, ParMETIS, PETSc, Scotch, SLEPC, SUNDIALS, Zoltan |
-| Software tools | CDO, CGNS, NCL, NCO, Paraview, PLUMED, PyTorch, Tensorflow, VMD, VTST |
-
-> ## Licensed software
-> For licensed software installed on ARCHER2, users are expected to bring their own licences to
-> the service with them. The ARCHER2 service does not provide software licences for use by 
-> users. Access to licensed software is available via three different mechnisms:
->   - Access control groups - for software that does not support a licence server
->   - Local licence server - for software that requires a licence server running on the ARCHER2 system
->   - Remote licence server - to allow software to call out to a publicly-accessible licence server
-{: .callout}
-
-More information on the software available on ARCHER2 can be found in
-[the ARCHER2 Documentation](https://docs.archer2.ac.uk).
-
-ARCHER2 also supports the use of [Singularity containers](https://docs.archer2.ac.uk/user-guide/containers.html) for single-node and multi-node jobs.
-
 > ## What about your research?
 >
 > Speak to your neighbour about your planned use of ARCHER2. Given what you now know about the system,
@@ -288,6 +107,64 @@ ARCHER2 also supports the use of [Singularity containers](https://docs.archer2.a
 > the largest challenges are going to be for you?
 > 
 > Write a few sentences in the course Etherpad describing the opportunities and challenges you discussed.
+{: .challenge}
+
+More information on ARCHER2 can be found in [the ARCHER2 Documentation](https://docs.archer2.ac.uk).
+
+## Connecting using SSH
+
+The ARCHER2 login address is
+
+```
+login.archer2.ac.uk
+```
+{: .language-bash}
+
+Access to ARCHER2 is via SSH using **both** a password and a passphrase-protected SSH key pair.
+
+## SSH keys
+
+As well as password access, users are required to add the public part of an SSH key pair to access ARCHER2.
+The public part of the key pair is associated with your account using the SAFE web interface.
+See the ARCHER2 User and Best Practice Guide for information on how to create SSH key pairs
+and associate them with your account:
+
+* [Connecting to ARCHER2](https://docs.archer2.ac.uk/user-guide/connecting.html)
+
+## Passwords and password policy
+
+When you first get an ARCHER2 account, you will get a single-use password from the 
+SAFE which you will be asked to change to a password of your choice. Your chosen 
+password must have the required complexity as specified in the
+[ARCHER2 Password Policy](https://www.archer2.ac.uk/about/policies/passwords_usernames.html).
+
+## Logging into ARCHER2
+
+Once you have setup your account in SAFE, uploaded your SSH key to SAFE and retrieved
+your initial password, you can log into ARCHER2 with:
+
+```
+ssh auser@login.archer2.ac.uk
+```
+{: .language-bash}
+
+(Remember to replace `auser` with your actual username!) On first login, you will be prompted
+to change your password from the intial one you got via SAFE,  This is a three step process:
+
+1. When promoted to enter your LDAP password: Re-enter the password you retrieved from SAFE
+2. When prompted to enter your new password: type in a new password
+3. When prompted to re-enter the new password: re-enter the new password
+
+> ## SSH from Windows
+> While Linux and macOS users can simply use the standard terminal to run the SSH command,
+> this may or may not work from Powershell for Windows users depending on which version of
+> Windows you are using. If you are struggling to connect, we suggest you use
+> [MobaXterm](https://docs.archer2.ac.uk/user-guide/connecting/#logging-in-from-windows-using-mobaxterm).
+{: .callout}
+
+> ## Log into ARCHER2
+> If you have not already done so, go ahead and log into ARCHER2. If you run into issues, please
+> let the instructor or helpers know so they can assist.
 {: .challenge}
 
 {% include links.md %}
