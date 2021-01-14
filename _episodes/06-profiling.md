@@ -271,9 +271,11 @@ of cores we are using. So, lets vary this and see how the profile changes.
 > 512 cores? Test if your theory is correct by producing the profile.
 > > ## Solution
 > > You should see the following
-> >  - MPI proportion:
-> >  - Memory use:
-> >  - I/O use:
+> >
+> >  - MPI proportion: around 20%
+> >  - Memory use: 21,792.3 MiBytes
+> >  - I/O use: Same as for the 64 node case
+> >
 > > The increase in time in MPI functions mean that more of the runtime of
 > > application is spent communicating between cores using MPI rather than
 > > actually doing computational work on our problem. This means that the
@@ -282,7 +284,7 @@ of cores we are using. So, lets vary this and see how the profile changes.
 > >
 > > When we increase the core count again we would expect to see the proportion
 > > of time in MPI functions increase still further leading to the application
-> > scaling moving even further away from ideal. (TODO: add results)
+> > scaling moving even further away from ideal.
 > {: .solution}
 {: .challenge}
 
