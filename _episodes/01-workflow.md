@@ -1,7 +1,7 @@
 ---
 title: "Understanding your HPC workflow"
 teaching: 30
-exercises: 10
+exercises: 15
 questions:
 - "What are the components of my HPC research workflow?"
 - "What impact would performance improvements have on the different components?"
@@ -50,7 +50,7 @@ workflow. For example, you may need to try a variety of different input configur
 for any of the calculations to obtain a reasonable model of the system of interest.
 
 > ## Your workflow
-> Talk to your neighbour (or rubber duck) and explain your research workflow. In particulr,
+> Talk to your neighbour (or rubber duck) and explain your research workflow. In particular,
 > try to break it down into separate steps or *components*. Which of the components are the
 > most time consuming and why? Why do the components have to be in the order you have
 > described them?
@@ -110,7 +110,7 @@ As well as understanding the components that make up your workflow, you should a
 aim to understand the *dependencies* between the components. By dependencies, we mean
 how does progress with one component depend on the output or completion of another
 component. In the simplified workflow examples we have thought about previously, the
-different components were largely sequential - the previous compontent had to complete before
+different components were largely sequential - the previous component had to complete before
 the next component could be started. In reality, this is not often true: there may be later
 components that are not strictly dependent on completion of previous components. Or, 
 our workflow may be made up of many copies of similar sequential workflows. (Or, even 
@@ -121,6 +121,6 @@ then there is the potential to make the workflow more efficient by allowing diff
 components to overlap in time or run in parallel. For example, consider the following
 simplified workflow:
 
-
+TODO: add simple potentially parallel workflow example
 
 {% include links.md %}
