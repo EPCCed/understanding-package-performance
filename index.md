@@ -7,14 +7,14 @@ address:
 country: "UK"
 language: "English"
 latlng: 
-humandate: 10:00-16:00 GMT, 25 January 2021
-humantime: 10:00-16:00 GMT
-startdate: 2021-01-25
-enddate: 2021-01-25
-instructor: ["Andy Turner"]
-helper: ["Michael Bareford", "William Lucas"]
+humandate: 
+humantime: 
+startdate: 
+enddate: 
+instructor: 
+helper: 
 email: ["support@archer2.ac.uk"]
-collaborative_notes: https://pad.archer2.ac.uk/p/210125pkgperf
+collaborative_notes: 
 ---
 As parallel packages for computational science become more sophisticated, it becomes more difficult
 for a researcher to understand the most important factors that determine end-to-end productivity
