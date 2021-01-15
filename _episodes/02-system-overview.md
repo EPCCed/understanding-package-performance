@@ -1,7 +1,7 @@
 ---
-title: "Overview of the ARCHER2 and connecting"
-teaching: 15
-exercises: 15
+title: "Overview of ARCHER2 and connecting via SSH"
+teaching: 10
+exercises: 10
 questions:
 - "What hardware and software is available on ARCHER2?"
 - "How does the hardware fit together?"
@@ -15,6 +15,10 @@ keypoints:
 - "ARCHER2's login address is `login.archer2.ac.uk`."
 - "You connect to ARCHER2 using an SSH client."
 ---
+
+In this short section we take a brief look at how the ARCHER2 supercomputer is put
+together and how to connect to the system using SSH so we are ready to complete the
+practical work in the rest of the course.
 
 ## Architecture
 
@@ -99,15 +103,6 @@ directory will be at:
 > If your jobs are having trouble accessing your data make sure you have placed it on Work
 > rather than Home. Remember, the home file systems are not visible from the compute nodes.
 {: .callout}
-
-> ## What about your research?
->
-> Speak to your neighbour about your planned use of ARCHER2. Given what you now know about the system,
-> what do you think the biggest opportunities are for your research in using ARCHER2? What do you think
-> the largest challenges are going to be for you?
-> 
-> Write a few sentences in the course Etherpad describing the opportunities and challenges you discussed.
-{: .challenge}
 
 More information on ARCHER2 can be found in [the ARCHER2 Documentation](https://docs.archer2.ac.uk).
 

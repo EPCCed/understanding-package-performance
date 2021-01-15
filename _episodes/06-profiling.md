@@ -1,6 +1,6 @@
 ---
 title: "Introduction to profiling"
-teaching: 30
+teaching: 15
 exercises: 10
 questions:
 - "How does profiling differ from performance benchmarking?"

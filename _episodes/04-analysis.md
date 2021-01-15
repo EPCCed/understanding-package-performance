@@ -442,6 +442,12 @@ harder to achieve.
 > {: .solution}
 {: .challenge}
 
+## Plotting performance
+
+TODO: add advice on plotting performance
+
+## Summary
+
 Now we should have a good handle on how we go about benchmarking performance of
 applications on HPC systems and how to analyse and understand the performance. 
 In the next section we look at how to automate the collection and analysis of

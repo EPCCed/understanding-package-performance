@@ -1,7 +1,7 @@
 ---
 title: "HPC performance and benchmarking"
 teaching: 30
-exercises: 10
+exercises: 25
 questions:
 - "Why should I benchmark my use of HPC?"
 - "What are the key benchmarking concepts that I should understand?"
