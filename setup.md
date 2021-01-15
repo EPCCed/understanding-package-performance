@@ -2,11 +2,15 @@
 title: Setup
 ---
 
+This setup takes you through getting ready for the course by ensuring you have an SSH client installed
+and registering for an ARCHER2 account.
+
 ## SSH client
 
 All attendees should have an SSH client installed.
 SSH is a tool that allows us to connect to and use a remote computer as our own.
-Please follow the directions below to install an SSH client for your system.
+Please follow the directions below to install an SSH client for your system if you do not 
+already have one.
 
 **Windows**
 
@@ -71,7 +75,7 @@ The public SSH key part will now be added to your login account on the ARCHER2 s
 
 ### Log into ARCHER2
 
-You should now be able to log into Cirrus by following the [login instructions in the ARCHER2 documentation](https://docs.archer2.ac.uk/user-guide/connecting/#ssh-clients).
+You should now be able to log into ARCHER2 by following the [login instructions in the ARCHER2 documentation](https://docs.archer2.ac.uk/user-guide/connecting/#ssh-clients).
 
 
 {% include links.md %}
