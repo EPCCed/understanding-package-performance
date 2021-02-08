@@ -41,7 +41,7 @@ time it will be worth investing in automation.
 
 > ## Many ways to skin a cat!
 > Like many programmatic problems, there are an extremely large number of ways
-> to address this problem. We will cover one apporach here using bash scripting,
+> to address this problem. We will cover one approach here using bash scripting,
 > but that does not mean you could not use Perl, Python or any other language
 > and approach. Often the best choice depends on what toolset you are already
 > familiar with and happy using.
@@ -91,9 +91,10 @@ of a benchmark run.
 > > #SBATCH --nodes=1
 > > #SBATCH --tasks-per-node=1
 > > #SBATCH --cpus-per-task=1
-> > #SBATCH --account=t001        
+> > #SBATCH --account=ta012        
 > > #SBATCH --partition=standard
 > > #SBATCH --qos=standard
+> > #SBATCH --reservation=ta012_89
 > > 
 > > # Setup the job environment (this module needs to be loaded before any other modules)
 > > module load epcc-job-env
@@ -146,6 +147,9 @@ timestamp=$(date +%s)
 ```
 {: .language-bash}
 
+(This captures the current epoch time into the `$timestamp` variable. Note that there
+cannot be any spaces on either side of the `=` sign in bash scripts.)
+
 We are going to use a bit of bash scripting to create a version of our job submission
 script that will allow us to specify the values of the variables that we want to 
 change as arguments and that will include the date. First we will show the complete
@@ -167,9 +171,10 @@ sbatch <<EOF
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=${ncores}
 #SBATCH --cpus-per-task=1
-#SBATCH --account=t001        
+#SBATCH --account=ta012        
 #SBATCH --partition=standard
 #SBATCH --qos=standard
+#SBATCH --reservation=ta012_89
  
 # Setup the job environment (this module needs to be loaded before any other modules)
 module load epcc-job-env
@@ -206,11 +211,11 @@ ncores=$1
 nruns=$2
 ```
 
-We then use a bash *here document* to pass the script to the `sbatch` command with the
+We then use a form of bash redirection called a *here document* to pass the script to the `sbatch` command with the
 values of `$ncores` and `$nruns` substituted in in the correct places: the `SBATCH` option
-for `$ncores` and the `seq` command for `$nruns`. One thing to note in the here document
+for `$ncores` and the `seq` command for `$nruns`. One thing to note in the *here document*
 is that we must *escape* the `$` for variables we want to still be variables in the 
-script by preceeding them with a backslash otherwise bash will try to substitute them
+script by preceding them with a backslash otherwise bash will try to substitute them
 in the same way it does for the `$ncores` and `$nruns` variables. You can see this
 in action in the `for` line, `timestamp` line and the `srun` line: we want these variables to be
 interpreted when the script *runs* so they need to be escaped, the unescaped variables
@@ -225,13 +230,6 @@ Now we have a script that can dynamically take the values we want for benchmarki
 we already have a script that can automatically extract the data from all benchmark
 runs, the final step is to setup the script that can automate the submission of the
 different benchmark cases.
-
-> ## Restricted to a single node?
-> The current script is restricted to running benchmarks on a single node. The part
-> before the here document could be modified to allow it to work with multiple nodes.
-> Please feel free to have a go at this if you want and ask the instructors if you
-> need help.
-{: .callout}
 
 ### Write the benchmark automation script and submit the jobs
 
@@ -307,9 +305,10 @@ in the script.
 > > #SBATCH --nodes=${nnodes}
 > > #SBATCH --tasks-per-node=${ncorespernode}
 > > #SBATCH --cpus-per-task=1
-> > #SBATCH --account=t001        
+> > #SBATCH --account=ta012        
 > > #SBATCH --partition=standard
 > > #SBATCH --qos=standard
+> > #SBATCH --reservation=ta012_89
 > >  
 > > # Setup the job environment (this module needs to be loaded before any other modules)
 > > module load epcc-job-env
@@ -346,6 +345,7 @@ have been used successfully in the past are:
   data and log it.
 - [JUBE](https://www.fz-juelich.de/ias/jsc/EN/Expertise/Support/Software/JUBE/jube.html#:~:text=The%20JUBE%20benchmarking%20environment%20provides,Centre%20of%20Forschungszentrum%20J%C3%BClich%2C%20Germany.) - an HPC benchmarking framework
   developed at the [Jülich Supercomputing Centre](https://www.fz-juelich.de/ias/jsc/EN/Home/home_node.html).
+- [Dakota](https://dakota.sandia.gov/) - advanced parametric study and optimisation tool.
 
 In the final section of this course, we take a brief look at *Profiling* performance of 
 applications on HPC systems.

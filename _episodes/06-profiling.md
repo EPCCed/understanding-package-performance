@@ -10,7 +10,9 @@ objectives:
 - "Understand what profiling is and the type of information it can reveal."
 - "Be able to profile an application without the need to build/compile."
 keypoints:
-- ""
+- "Profiling allows to see what routines are consuming runtime in our application."
+- "Profiling can also provide information on memory use and IO by our application."
+- "The differences between profiles at different node/core counts can be more revealing than a single profile."
 ---
 
 So far in this workshop we have mostly looked at measuring the performance variation
@@ -65,7 +67,7 @@ profiling functionality added for you to use. The binary is called `sharpen-mpi-
 Let's use `srun` to run this binary on 64 cores:
 
 ```
-srunopt --nodes=1 --ntasks-per-node=64 sharpen-mpi-profile.x > sharpen_64cores_profile.dat
+srunopt --time=0:10:0 --nodes=1 --ntasks-per-node=64 sharpen-mpi-profile.x > sharpen_64cores_profile.dat
 ```
 {: .language-bash}
 ```
@@ -262,19 +264,22 @@ of cores we are using. So, lets vary this and see how the profile changes.
 > ## Profile on 256 cores
 > Rerun the profiling experiment on 256 cores. Look at the performance profile
 > compared to the one you have for 64 cores. Are there differences in:
->  - proportion of time spent in MPI functions;
->  - memory use; and
->  - I/O use?
+> 
+> - proportion of time spent in MPI functions;
+> - memory use; and
+> - I/O use?
+> 
 > Can you offer any explanation for the changes you observe and propose how 
 > they might affect the performance of the application?
 > Can you guess what might happen if you double the core count again to 
 > 512 cores? Test if your theory is correct by producing the profile.
+> 
 > > ## Solution
 > > You should see the following
 > >
-> >  - MPI proportion: around 20%
-> >  - Memory use: 21,792.3 MiBytes
-> >  - I/O use: Same as for the 64 node case
+> > - MPI proportion: around 20%
+> > - Memory use: 21,792.3 MiBytes
+> > - I/O use: Same as for the 64 node case
 > >
 > > The increase in time in MPI functions mean that more of the runtime of
 > > application is spent communicating between cores using MPI rather than

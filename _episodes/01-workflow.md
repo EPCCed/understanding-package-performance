@@ -119,8 +119,66 @@ a combination of both of these options.)
 When we do not have strict sequential dependencies between components of our workflows
 then there is the potential to make the workflow more efficient by allowing different
 components to overlap in time or run in parallel. For example, consider the following
-simplified workflow:
+simplified materials modelling workflow:
 
-TODO: add simple potentially parallel workflow example
+ - Step 1: Source crystal structures from experimental data or previous modelling studies
+ - Step 2: Convert crystal structures into input format for modelling using VASP
+ - Step 3: Define the input parameters for the planned calculations at a range of temperatures and pressures
+ - Step 4: Upload the input files for the VASP calculations to the HPC system
+ - Step 5: Run VASP calculations on HPC system
+ - Step 6: Download output from HPC system to local resource for analysis
+ - Step 7: Analyse output from individual VASP calculations
+ - Step 8: Combine multiple analyses/output to generate meaningful results for research
+
+As there are now multiple experimental crystal structures to start from and 
+multiple independent calculations at different physical conditions for each of
+the starting crystal structures we can rewrite the workflow in a way that 
+exposes the dependencies and potential parallelism:
+
+- For each crystal structure:
+  - (1) Source crystal structures from experimental data or previous modelling studies
+  - (2) Convert crystal structures into input format for modelling using VASP (depends on (1))
+  - For each physical condition set:
+    - (a) Define the input parameters for the planned calculations at a range of temperatures and pressures (depends on (2))
+    - (b) Upload the input files for the VASP calculations to the HPC system (depends on (a))
+    - (c) Run VASP calculations on HPC system (depends on (b))
+    - (d) Download output from HPC system to local resource for analysis (depends on (c))
+    - (e) Analyse output from individual VASP calculations (depends on (d))
+- Combine multiple analyses/output to generate meaningful results for research (depends on completing all (e))
+
+Assuming we have 5 different crystal structures and 10 different sets of physical conditions 
+for each crystal structure we have the potential for running 5&times; steps (1) and (2) 
+simultaneously and the potential for running 50&times; steps (a)-(e) simultaneously. 
+Of course, all of this parallelism may not be realisable as some of the potentially parallel
+steps may be manual and there may only be one person available to perform these steps. However,
+with some planning and thought to automation before we start this workflow we may be able
+to exploit this potential parallelism.
+
+> ## Your workflow revisited
+> Think about your workflow again. Can you identify any opportunities for parallelism
+> and/or automation that you are not already exploiting? Is there enough to be gained
+> from working to parallelise/automate that would make it worthwhile to take some time
+> to do this?
+{: .challenge}
+
+As always with research, the temptation is to just get stuck in and start doing work. However,
+it is worth taking a small amount of time at the start to think about your workflow and 
+the dependencies between the different steps to see what potential there is for 
+exploiting parallelism and automation to improve the efficiency and overall time taken
+for the workflow. Note that often people think about this in terms of the overall 
+research *project* workplan but then do not take the addtional step to think about the
+workflows within the different project steps.
+
+## Understanding performance of HPC components
+
+For the rest of this course we are going to focus on understanding the performance
+of HPC aspects of a research workflow and look at how we use that understanding to
+make decisions about making our use (or future use) of HPC more efficient. Keep in 
+mind the air travel analogy when we are doing this though - making the
+HPC aspect more efficient may not have the impact you want on your overall workflow
+if other aspects come to dominate the total time taken (in fact, we will see this 
+issue rear its head again when we talk about the limits of parallel scaling later
+in the course).
+
 
 {% include links.md %}

@@ -55,7 +55,7 @@ vd benchmark_perf.csv
 ```
 {: .output}
 
-As noted above, VisiData allows us to show scatter plots in the 
+As noted earlier, VisiData allows us to show scatter plots in the 
 terminal to get a quick visual representation of the relationship between the
 data in different columns. To do this, we need to make sure the columns are 
 set to the correct numerical data types and say which one is going to be the 
@@ -91,7 +91,9 @@ to show it has been set as the categorical data.
 Finally, we can plot the graph by hitting `g.` (`g` followed by a period). You
 should see something like the plot shown below which shows the variation of 
 maximum performance for the calculation part of Sharpen and the overall 
-performance of Sharpen (calculation and IO).
+performance of Sharpen (calculation and IO). (We have also included a plot
+of the same data in Excel as it is difficult to see the terminal plot in the
+web interface for the course.)
 
 ```
 21.50                                                                 1:Calc_perf_max ⠁
@@ -121,6 +123,14 @@ Cores»    1                  64                 128                192         
 ```
 {: .output}
 
+<img src="{{ page.root }}/fig/perf.png" alt="Performance plot" />
+
+> ## Plotting timing data
+> Use Visidata to plot the timing data rather than the peformance. Looking
+> at the timing plot, can you think of a reason why plotting the performance
+> data is often preferred over plotting the raw timing data.
+{: .callout} 
+
 > ## What does this show?
 > You can see that the performance of the calculation part and the overall 
 > performance look different. Can you come up with any explanation for the
@@ -131,6 +141,7 @@ Cores»    1                  64                 128                192         
 > > calculation part. This indicates that there is something else in the
 > > sharpen program that is adversely affecting the performance as we increase
 > > the number of cores.
+> {: .solution}
 {: .challenge}
 
 ## Analysis
@@ -172,7 +183,7 @@ two metrics that we introduced earlier:
 > and hitting `-`. You can unhide all columns once you have finished plotting
 > with `gv`.
 > 
-> ## Solution
+> > ## Solution
 > > ### Computing speedup
 > > Note the value for the "Calc_perf_max" on one core - this is the baseline
 > > performance we are going to use to compute the speedup, in my case it is 
@@ -238,11 +249,13 @@ two metrics that we introduced earlier:
 > > Cores»    1                  64                 128                192                256
 > > 3› benchmark_perf_graph| loading data points | loaded 27 points (0  g.          27 plots 
 > > ```
+> > {: .output}
 > >
 > > You can see that the calculation speedup is much closer to the perfect 
 > > scaling than the overall speedup. You can use `q` to get back to the 
 > > spreadsheet view and `gv` to unhide the hidden columns.
-> > {: .output}
+> >
+> > <img src="{{ page.root }}/fig/speedup.png" alt="Speedup plot" />
 > > 
 > {: .solution}
 {: .challenge}
@@ -387,7 +400,7 @@ runtime is taken up by IO.
 1› benchmark_perf|                                  -  hide-col         9 rows 
 ```
 
-What do we see? The IO time is constant as the number of cores increases indicating 
+What do we see? The IO time is constant as the number of cores increases, indicating 
 that this part of the code is serial (it does not benefit from more cores). As the 
 number of cores increases, the serial part becomes a larger and larger fraction of
 the overall run time (the calculation time decreases as it benefits from 
@@ -441,10 +454,6 @@ harder to achieve.
 > >  - There is no scope for increasing the problem size
 > {: .solution}
 {: .challenge}
-
-## Plotting performance
-
-TODO: add advice on plotting performance
 
 ## Summary
 

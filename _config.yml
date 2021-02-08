@@ -14,7 +14,7 @@ title: "Understanding Package Performance"
 
 # Life cycle stage of the lesson
 # possible values: "pre-alpha", "alpha", "beta", "stable"
-life_cycle: "beta"
+life_cycle: "stable"
 
 #------------------------------------------------------------
 # Generic settings (should not need to change).
@@ -101,3 +101,8 @@ exclude:
 highlighter: rouge
 
 remote_theme: carpentries/carpentries-theme
+
+# Course settings
+workshop_account: "ta012"
+workshop_reservation: "ta012_89"
+workshop_srun_options: "--partition=standard --qos=standard --reservation=ta012_89 --account=ta012 --hint=nomultithread --distribution=block:block"

@@ -12,7 +12,9 @@ objectives:
 - "Understand key benchmarking concepts and why they are useful for me."
 - "Be able to identify the correct performance metric for my HPC use."
 keypoints:
-- ""
+- "Different timing and performance metrics are used for different applications."
+- "Use the lowest node/core count that is feasible for your baseline."
+- "Plan your benchmarking before you start, make sure you understand which parameters you want to vary and why."
 ---
 
 Having looked at workflow components in general we will now move on to look
@@ -53,8 +55,10 @@ are unlikely to be purchasing your own HPC system so we will not discuss this
 scenario further here!
 
 > ## Both program and input are important
-> Remember, it is not just the application you are benchmarking - it is the combination
-> of the application and the input data that constitute the benchmark case.
+> Remember, it is not just the software package you are benchmarking - it is the combination
+> of the software package and the input data that constitute the benchmark case. Throughout
+> this course we will refer to this combination of the software and the input as the
+> *application*.
 {: .callout}
 
 ## Key benchmarking terminology and concepts
@@ -71,8 +75,10 @@ benchmarking so we will define them first:
    per day, SCF cycles per second. The actual measure you use is the 
    *performance metric*.
  - **Baseline performance**: Most benchmarking uses a baseline performance to 
-   measure performance improvement against. In the benchmarking we do here, this
-   will usually be the performance on the smallest number of nodes (often 1 node).
+   measure performance improvement against. In HPC benchmarking, this
+   will usually be the performance on the smallest number of nodes. (For the
+   extremely simple application we are going to look at, we will actually use
+   a single core but this is often not possible for most real HPC applications.)
  - **Scaling**: A measure of how the performance changes as the number of 
    nodes/cores are increased. Scaling is measured relative to the
    *baseline performance*. *Perfect scaling* is the performance you would expect
@@ -80,7 +86,7 @@ benchmarking so we will define them first:
  - **Parallel efficiency**: The ratio of measured scaling to the perfect scaling.
 
 > ## Your application use an benchmarking
-> Think about your use of HPC, for an HPC application you use try to identify
+> Think about your use of HPC. For an HPC application you use, try to identify
 > the timings and performance metric you might use when benchmarking. Why do
 > you think the metrics you have chosen are the correct ones for this case?
 {: .challenge}
@@ -89,12 +95,12 @@ benchmarking so we will define them first:
 
  - Plan the benchmark runs you want to perform - what are you planning to measure
    and why?
-   + Remember, you can often vary both input parameters to the program
+   + Remember, you can often vary both input parameters to the application
      and the parallel distribution on the HPC system itself.
    + If you vary multiple parameters at once it can become difficult to interpret
      the data so you often want to vary one at at time (e.g. number of MPI processes).
  - Benchmark performance should be measured multiple times to assess variability.
-   Three individual runs are usually considered the minimum but five is better.
+   Three individual runs are usually considered the minimum but more are better.
    + We will discuss how to combine multiple runs properly to produce a single
      value later in the course.
  - You should try to capture all of the relevant information on the run as most
@@ -109,14 +115,14 @@ benchmarking so we will define them first:
 Now we will use a simple example HPC application to run some benchmarks and extract
 *timings* and *performance* data. In the next part of this course we will look at 
 how to analyse and present this data to help us interpret the performance of the 
-program.
+application.
 
 To do this, we will run the image sharpening program on different numbers of MPI
 processes for the same input to look at how well its performance scales.
 
 ### Initial setup
 
-Log into ARCHER2, if you are not already logged in, and load the `sharpen`
+Log into ARCHER2, if you are not already logged in, and load the `training/sharpen`
 module to gain access to the software and input data:
 
 ```
@@ -128,6 +134,12 @@ Once this is done, move to your /work directory, create a sub-directory to
 contain our benchmarking results and move into it (remember to replace 
 `t001` with the correct project code for your course and `auser` with your
 username on ARCHER2).
+
+> ## Only work file system is visible on the compute nodes
+> Remember, the work file system is the only one available on the ARCHER2
+> compute nodes. All just should be launched from a directory on the work
+> file system to ensure they run correctly.
+{: .callout}
 
 ```
 cd /work/t001/t001/auser
@@ -150,21 +162,21 @@ fuzzy.pgm
 
 ### Baseline performance
 
-For this small example, we are going to use a run on a single core as
+For this small example, we are going to use a run on a single core of a compute node as
 our baseline.
 
 > ## Baseline size
-> Remember that for real parallel applications and input cases, it will
+> Remember that for real parallel applications, it will
 > often not be possible to use a single core or even a single node as 
 > your baseline (due to memory requirements or fitting the run within
 > a reasonable runtime). Nevertheless, you should try and use the smallest size
 > that you feasibly can for your baseline.
 {: .callout}
 
-Run the single core calculation with:
+Run the single core calculation on an ARCHER2 compute node with:
 
 ```
-srun --cpu-bind=rank --nodes=1 --ntasks-per-node=1 --time=0:10:0 --account=t001 --partition=standard --qos=standard sharpen-mpi.x > sharpen_1core_001.out
+srun {{ site.workshop_srun_options }} --nodes=1 --ntasks-per-node=1 --time=0:10:0  sharpen-mpi.x > sharpen_1core_001.out
 ```
 {: .language-bash}
 ```
@@ -173,12 +185,15 @@ srun: job 62318 has been allocated resources
 ```
 {: .output}
 
+Using `srun` in this way launches the application on a compute nodes with the 
+specified resources.
+
 This line is quite long and is going to be tedious to type out each time we
 want to run a calculation so we will setup a command alias with the options
 that will not change each time we run to make things easier:
 
 ```
-alias srunopt="srun --cpu-bind=rank --time=0:10:0 --account=t001 --partition=standard --qos=standard"
+alias srunopt="srun {{ site.workshop_srun_options }}"
 ```
 {: .language-bash}
 
@@ -191,7 +206,7 @@ alias srunopt="srun --cpu-bind=rank --time=0:10:0 --account=t001 --partition=sta
 Now we can run the baseline calculation again with:
 
 ```
-srunopt --nodes=1 --ntasks-per-node=1 sharpen-mpi.x > sharpen_1core_002.out
+srunopt --time=0:10:0 --nodes=1 --ntasks-per-node=1 sharpen-mpi.x > sharpen_1core_002.out
 ```
 {: .language-bash}
 ```
@@ -272,8 +287,13 @@ The answer depends on what you are measuring and why. Some examples:
    get through with the current resources you have. In this case, you will
    likely want to take the arithmetic mean of the timings you have and convert this 
    into the performance metric.
-   + Note that you should not generally calculate
-     metrics and then use an arithmetic mean to combine them (TODO: add reasoning)
+   + Note that you should not generally combine rate metric results using the 
+     arithmetic mean as this can lead to incorrect conclusions. It is better
+     to combine results using the timings and the convert this result into the
+     rate. (If you need to combine rate metrics, you can use the harmonic
+     mean rather than the arithmetic mean.) See
+     [Scientific Benchmarking of Parallel Computing Systems](https://spcl.inf.ethz.ch/Teaching/2019-dphpc/hoefler-scientific-benchmarking.pdf)
+     for more information on how to report performance data.)
  - You want an idea of the best case scenario to allow you to compare the
    performance of different HPC systems or parameter choices. In this case,
    you will likely want to take the *best* performance at each of your 
@@ -653,7 +673,7 @@ In this section we have discussed:
  - Running benchmark calculations and gathering data
  - Capturing information on differences between benchmark runs
 
-We also used a simple example program to allow us to collect some benchmark
+We also used a simple example application to allow us to collect some benchmark
 data on ARCHER2.
 
 Now we have collected our benchmarking data we will turn to how to analyse the data,

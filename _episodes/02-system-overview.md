@@ -22,14 +22,15 @@ practical work in the rest of the course.
 
 ## Architecture
 
-The ARCHER2 hardware is an HPE Cray EX system consists of a number of different node types. The ones visible
+The ARCHER2 hardware is an HPE Cray EX system consisting of a number of different node types. The ones visible
 to users are:
 
 * Login nodes
 * Compute nodes
 
 All of the node types have the same processors: AMD EPYC Zen2 7742, 2.25GHz, 64-cores. All nodes
-are dual socket nodes so there are 128 cores per node.
+are dual socket nodes so there are 128 cores per node. The image below gives an overview of how
+the final, full ARCHER2 system is put together.
 
 <img src="{{ page.root }}/fig/archer2_architecture.png" alt="ARCHER2 architecture" />
 
@@ -45,18 +46,17 @@ both batch jobs and interactive jobs.
 
 ## Storage
 
-There are three different storage systems available on ARCHER2:
+There are two different storage systems available on the ARCHER2 4 cabinet system:
 
 * Home
 * Work
-* Solid State
 
 ### Home
 
 The home file systems are available on the login nodes only and are designed for the storage
 of critical source code and data for ARCHER2 users. They are backed-up regularly offsite for
-disaster recovery purposes - restoration of accidentally deleted files is not supported. There is a
-total of 1 PB usable space available on the home file systems.
+disaster recovery purposes. There is a total of 1 PB usable space available on the home file
+systems.
 
 All users have their own directory on the home file systems at:
 
@@ -83,8 +83,8 @@ directory* will be at:
 The work file systems, which are available on the login and compute  nodes, are
 designed for high performance parallel access and are the primary location that jobs running on
 the compute nodes will read data from and write data to. They are based on the Lustre parallel
-file system technology. The work file systems are not backed up in any way. There is a total of 
-14.5 PB usable space available on the work file systems.
+file system technology. The work file systems are not backed up in any way. There will be a total of 
+14.5 PB usable space available on the work file systems on the final, full ARCHER2 system.
 
 All users have their own directory on the work file systems at:
 
@@ -146,7 +146,7 @@ ssh auser@login.archer2.ac.uk
 (Remember to replace `auser` with your actual username!) On first login, you will be prompted
 to change your password from the intial one you got via SAFE,  This is a three step process:
 
-1. When promoted to enter your LDAP password: Re-enter the password you retrieved from SAFE
+1. When prompted to enter your LDAP password: Re-enter the password you retrieved from SAFE
 2. When prompted to enter your new password: type in a new password
 3. When prompted to re-enter the new password: re-enter the new password
 
