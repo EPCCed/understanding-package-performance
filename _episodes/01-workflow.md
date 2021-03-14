@@ -1,7 +1,7 @@
 ---
 title: "Understanding your HPC workflow"
-teaching: 30
-exercises: 15
+teaching: 40
+exercises: 20
 questions:
 - "What are the components of my HPC research workflow?"
 - "What impact would performance improvements have on the different components?"

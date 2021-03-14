@@ -1,6 +1,6 @@
 ---
 title: "Welcome"
-teaching: 15
+teaching: 20
 exercises: 0
 questions:
 - "What can I expect from this course?"
