@@ -3,7 +3,8 @@ title: Setup
 ---
 
 This setup takes you through getting ready for the course by ensuring you have an SSH client installed
-and registering for an ARCHER2 account.
+and registering for an ARCHER2 account (you can also use an existing ARCHER2 acccount if you are already
+a user).
 
 ## SSH client
 
@@ -29,6 +30,11 @@ macOS comes with SSH pre-installed, so you should not need to install anything. 
 Linux users do not need to install anything, you should be set! Use your terminal application.
 
 ## Account on ARCHER2
+
+**Note:** If you alredy have an ARCHER2 account you can use that for this course. Please see
+see the notes at the end of this page rather than requesting a new account. Of course, if 
+you prefer to sign up for another ARCHER2 account specifically for this course, you are 
+welcome to do this instead!
 
 Please sign up for your account on our HPC machine, ARCHER2, which will be available to
 you for the duration of the course and for a few days afterwards, to allow you to
@@ -77,6 +83,36 @@ The public SSH key part will now be added to your login account on the ARCHER2 s
 
 You should now be able to log into ARCHER2 by following the [login instructions in the ARCHER2 documentation](https://docs.archer2.ac.uk/user-guide/connecting/#ssh-clients).
 
+### Using an existing ARCHER2 account
+
+If you wish to use an existing ARCHER2 account for the course, that is perfectly fine. The
+only difference from the specific course account is that you will not have access to the
+the node reservations for the course. Instead, you can use the ARCHER2 `short` QoS which will
+work fine for this course. When the course talks about setting the following options:
+
+```
+--qos=standard --reservation=<name of course reservation>
+```
+
+you should replace them with:
+
+```
+--qos=short --reservation=shortqos
+```
+
+Similarly, when you are writing job submission scripts, you should replace:
+
+```
+#SBATCH --qos=standard
+#SBATCH --reservation=<name of course reservation>
+```
+
+with
+
+```
+#SBATCH --qos=short
+#SBATCH --reservation=shortqos
+```
 
 {% include links.md %}
 
