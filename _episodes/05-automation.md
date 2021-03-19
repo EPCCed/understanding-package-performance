@@ -1,7 +1,7 @@
 ---
 title: "Automating performance data collection and analysis"
 teaching: 30
-exercises: 30
+exercises: 40
 questions:
 - "Why is automation useful?"
 - "What considerations should I have when automating collecting performance data?"
