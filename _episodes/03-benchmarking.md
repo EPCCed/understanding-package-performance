@@ -33,6 +33,7 @@ and so the parameters we will measure performance variation against are usually:
  - The number of parallel (usually MPI) processes we use
  - The number of threads (usually OpenMP threads) we use
  - The distribution of processes/threads across compute nodes
+ - Any scheduler specific options that affect performance (usually linked to process/thread distribution)
  - Calculation input parameters that affect performance
 
 We often want to explore multiple parameters in our benchmarking to get an idea
