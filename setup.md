@@ -3,7 +3,7 @@ title: Setup
 ---
 
 This setup takes you through getting ready for the course by ensuring you have an SSH client installed
-and registering for an ARCHER2 account (you can also use an existing ARCHER2 acccount if you are already
+and registering for an ARCHER2 account (you can also use an existing ARCHER2 account if you are already
 a user).
 
 ## SSH client
